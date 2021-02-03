@@ -1,0 +1,26 @@
+.grid {
+  margin: 100px 0 0;
+  text-align: center;
+}
+.custom-header {
+  /* background-color: #47767a; */
+  background-color: #333b3f;
+  height: 150px;
+  padding-top: 10px;
+}
+
+.app-name {
+  text-align: left;
+  color: white;
+  font-size: 40px;
+  font-family: Helvetica, Arial, sans-serif;
+  margin-top: 18px;
+  font-weight: 800;
+}
+
+.white-font {
+  color: white;
+}
+.visualize-button {
+  font-weight: 800;
+}
