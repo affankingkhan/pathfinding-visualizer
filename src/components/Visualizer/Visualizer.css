@@ -21,6 +21,7 @@
 .white-font {
   color: white;
 }
-.visualize-button {
-  font-weight: 800;
+
+.btn {
+  font-weight: 800 !important;
 }

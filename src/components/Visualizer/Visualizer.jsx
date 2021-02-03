@@ -96,15 +96,14 @@ export const Visualizer = () => {
   };
 
   const handleMouseDown = (row, col) => {
-    if (checkUnChangeableNode(row, col)) return;
+    if (checkUnChangeableNode(row, col) || disabled) return;
     const newGrid = fetchNewGridWithWallToggled(grid, row, col, 1);
     setGrid(newGrid);
     setMouseIsPressed(true);
   };
 
   const handleMouseEnter = (row, col) => {
-    if (!mouseIsPressed) return;
-    if (checkUnChangeableNode(row, col)) return;
+    if (!mouseIsPressed || checkUnChangeableNode(row, col) || disabled) return;
     const newGrid = fetchNewGridWithWallToggled(grid, row, col, 2);
     setGrid(newGrid);
   };
