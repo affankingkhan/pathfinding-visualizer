@@ -49,12 +49,30 @@ export const Visualizer = () => {
     }
   };
 
-  const reset = () => {
+  const clearBoard = () => {
     setVisualizeDisabled(false);
     const grid = getInitialGrid();
     setNodeRefs(grid);
     setGrid(grid);
     clearAnimations();
+  };
+
+  const clearPath = () => {
+    setVisualizeDisabled(false);
+    clearAnimations();
+    revertAllNodeButPreserveWalls();
+  };
+
+  const revertAllNodeButPreserveWalls = () => {
+    let newGrid = [...grid];
+    for (let row of newGrid) {
+      for (let n of row) {
+        n.distance = Infinity;
+        n.isVisited = false;
+        n.previousNode = null;
+      }
+    }
+    setGrid(newGrid);
   };
 
   const clearAnimations = () => {
@@ -70,22 +88,31 @@ export const Visualizer = () => {
     setAlgorithm(e.target.value);
   };
 
+  const checkUnChangeableNode = (row, col) => {
+    return (
+      (row === START_NODE_ROW && col === START_NODE_COL) ||
+      (row === FINISH_NODE_ROW && col === FINISH_NODE_COL)
+    );
+  };
+
   const handleMouseDown = (row, col) => {
-    const newGrid = fetchNewGridWithWallToggled(grid, row, col);
+    if (checkUnChangeableNode(row, col)) return;
+    const newGrid = fetchNewGridWithWallToggled(grid, row, col, 1);
     setGrid(newGrid);
     setMouseIsPressed(true);
   };
 
   const handleMouseEnter = (row, col) => {
     if (!mouseIsPressed) return;
-    const newGrid = fetchNewGridWithWallToggled(grid, row, col);
+    if (checkUnChangeableNode(row, col)) return;
+    const newGrid = fetchNewGridWithWallToggled(grid, row, col, 2);
     setGrid(newGrid);
   };
 
   const handleMouseUp = () => {
     setMouseIsPressed(false);
   };
-  // console.log(nodeRefs.current ? nodeRefs.current : 'lol');
+
   const setRef = (el) => {
     if (el) {
       let row = el.getAttribute('row');
@@ -219,9 +246,17 @@ export const Visualizer = () => {
                 type="button"
                 className="btn btn-lg btn-secondary float-right mr-2"
                 disabled={disabled}
-                onClick={reset}
+                onClick={clearBoard}
               >
-                Reset
+                Clear Board
+              </button>
+              <button
+                type="button"
+                className="btn btn-lg btn-secondary float-right mr-2"
+                disabled={disabled}
+                onClick={clearPath}
+              >
+                Clear Path
               </button>
             </div>
           </div>
@@ -262,12 +297,17 @@ const createNode = (row, col) => {
   };
 };
 
-const fetchNewGridWithWallToggled = (grid, row, col) => {
+const fetchNewGridWithWallToggled = (grid, row, col, val) => {
+  console.log({ val });
   const newGrid = [...grid];
   const node = newGrid[row][col];
+  let newType = node.type === 'wall' ? '' : 'wall';
+  if (val === 2) {
+    newType = 'wall';
+  }
   const newNode = {
     ...node,
-    type: 'wall',
+    type: newType,
   };
   newGrid[row][col] = newNode;
   return newGrid;
