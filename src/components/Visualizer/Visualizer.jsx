@@ -4,14 +4,15 @@ import { Label, Input } from 'reactstrap';
 import Node from '../Node/Node';
 import { dijkstra } from '../../algorithms/dijkstra';
 import { dfs } from '../../algorithms/dfs';
+import { aStar } from '../../algorithms/astar';
 import { fetchNodesInShortestPathOrder } from '../../algorithms/helper';
 
 const NUM_ROWS = 20;
 const NUM_COLS = 50;
 const START_NODE_ROW = 5;
 const START_NODE_COL = 15;
-const FINISH_NODE_ROW = 10;
-const FINISH_NODE_COL = 35;
+const FINISH_NODE_ROW = 18;
+const FINISH_NODE_COL = 2;
 const DIJKSTRA_SPEED = 5;
 const SHORTEST_PATH_SPEED = 50;
 
@@ -154,6 +155,10 @@ export const Visualizer = () => {
         visualizeDFS();
         break;
 
+      case 'A* Search':
+        visualizeAStar();
+        break;
+
       default:
         break;
     }
@@ -175,6 +180,17 @@ export const Visualizer = () => {
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
     const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
     const visitedNodesInOrder = dfs(grid, startNode, finishNode);
+    const nodesInShortestPathOrder = fetchNodesInShortestPathOrder(finishNode);
+    await animateAlgo(visitedNodesInOrder, nodesInShortestPathOrder);
+    await setDisabled(false);
+  };
+
+  const visualizeAStar = async () => {
+    await setVisualizeDisabled(true);
+    await setDisabled(true);
+    const startNode = grid[START_NODE_ROW][START_NODE_COL];
+    const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+    const visitedNodesInOrder = aStar(grid, startNode, finishNode);
     const nodesInShortestPathOrder = fetchNodesInShortestPathOrder(finishNode);
     await animateAlgo(visitedNodesInOrder, nodesInShortestPathOrder);
     await setDisabled(false);
@@ -230,6 +246,7 @@ export const Visualizer = () => {
                   >
                     <option>Dijkstra's Algorithm</option>
                     <option>Depth First Search</option>
+                    <option>A* Search</option>
                   </Input>
                 </div>
               </div>
@@ -293,6 +310,7 @@ const createNode = (row, col) => {
     distance: Infinity,
     isVisited: false,
     previousNode: null,
+    distanceToEnd: Infinity,
   };
 };
 
