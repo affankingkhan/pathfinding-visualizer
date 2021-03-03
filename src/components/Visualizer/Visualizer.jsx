@@ -11,8 +11,8 @@ const NUM_ROWS = 20;
 const NUM_COLS = 50;
 const START_NODE_ROW = 5;
 const START_NODE_COL = 15;
-const FINISH_NODE_ROW = 18;
-const FINISH_NODE_COL = 2;
+const FINISH_NODE_ROW = 13;
+const FINISH_NODE_COL = 38;
 const DIJKSTRA_SPEED = 5;
 const SHORTEST_PATH_SPEED = 50;
 
