@@ -6,6 +6,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Pathfinding Visualizer Tool
 
 A tool that allows users to visualize common pathfinding algorthims such as Dijkstra's and A\*.
+Created using React with React Hooks.
 
 ## Pathfinding Algorithms
 
